@@ -90,7 +90,11 @@ public class MyListsTests extends CoreTestCase {
         SearchPageObject searchPage = SearchPageObjectFactory.get(driver);
         searchPage.initSearchInput();
         searchPage.typeSearchLine("Java");
-        searchPage.clickByArticleWithSubstring("зык программирования");
+        if(!Platform.getInstance().isMW()) {
+            searchPage.clickByArticleWithSubstring("зык программирования");
+        }else{
+            searchPage.clickByArticleWithSubstring("Java");
+        }
 
         ArticlePageObject articlePage = ArticlePageObjectFactory.get(driver);
         if (Platform.getInstance().isAndroid()) {
@@ -110,13 +114,32 @@ public class MyListsTests extends CoreTestCase {
         } else {
             articlePage.saveArticleToSaved();
         }
+        if(Platform.getInstance().isMW()){
+            AuthorizationPageObject authorizationPageObject = new AuthorizationPageObject(driver);
+            authorizationPageObject.clickAuthButton();
+            authorizationPageObject.enterLoginData(login, password);
+            authorizationPageObject.submitForm();
+
+            articlePage.waitForTitleElement(javaTitle);
+
+            assertEquals("We are not on the same page",
+                    javaTitle,
+                    articlePage.getArticleTitle()
+            );
+            articlePage.saveArticleToSaved();
+        }
 
         NavigationUI navigationUI = NavigationPageObjectFactory.get(driver);
+
+
         navigationUI.goBackButtonClick();
+
         if (Platform.getInstance().isAndroid()) {
             navigationUI.goBackButtonClick(); // Возврат к результатам поиска на Android
-        }else{
+        }else if (Platform.getInstance().isiOS()){
             searchPage.clickCancelSearchButton();
+        }else{
+            navigationUI.navigateToMainPage();
         }
 
         // === Сохраняем вторую статью: APK ===
@@ -139,7 +162,7 @@ public class MyListsTests extends CoreTestCase {
         if (Platform.getInstance().isAndroid()) {
             navigationUI.goBackButtonClick();
         }
-
+        navigationUI.openNavigation();
         // Переход в "Сохранённые"
         navigationUI.clickSaved();
 
@@ -148,8 +171,9 @@ public class MyListsTests extends CoreTestCase {
         if (Platform.getInstance().isAndroid()) {
             myListsPage.openFolderByName(nameOfFolder);
         }
-        myListsPage.closePopUpMessage();
-
+        if (!Platform.getInstance().isMW()){
+            myListsPage.closePopUpMessage();
+        }
         // Удаление статьи "Java"
         myListsPage.swipeArticleByTitleToDelete(javaTitle);
         if (Platform.getInstance().isiOS()) {

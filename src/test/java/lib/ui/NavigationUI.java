@@ -9,7 +9,8 @@ abstract public class NavigationUI extends MainPageObject{
     protected static String
     SAVED_BUTTON,
     GO_BACK_BUTTON,
-    OPEN_NAVIGATION;
+    OPEN_NAVIGATION,
+    MAIN_PAGE;
 
     public NavigationUI (RemoteWebDriver driver){
         super (driver);
@@ -20,9 +21,15 @@ abstract public class NavigationUI extends MainPageObject{
         }else{
         this.waitForElementAndClick(GO_BACK_BUTTON,
                 "Элемент 'Перейти вверх' не найден",
-                90
+                15
         );
         }
+    }
+    public void navigateToMainPage(){
+        this.waitForElementAndClick(MAIN_PAGE,
+                "Элемент 'Поиск' не найден",
+                15
+        );
     }
     public void clickSaved(){
         if(Platform.getInstance().isMW()){

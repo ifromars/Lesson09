@@ -12,5 +12,6 @@ public class MWNavigationUI extends NavigationUI {
     static {
         SAVED_BUTTON = "css:a[data-event-name='menu.watchlist']";
         OPEN_NAVIGATION = "css:#main-menu-input";
+        MAIN_PAGE = "xpath://span//img[@alt ='Википедия']/../..";
     }
 }

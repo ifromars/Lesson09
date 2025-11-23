@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.*;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.ArticlePageObject;
@@ -7,11 +8,17 @@ import lib.ui.SearchPageObject;
 import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@Epic("Тесты изменения условий приложения")
 public class ChangeAppConditionTests extends CoreTestCase {
 
     @Test
+    @Features(value = {@Feature("Поиск"), @Feature("Статья"), @Feature("Ориентация")})
+    @DisplayName("Изменение ориентации экрана при просмотре результатов поиска")
+    @Description("Проверка что заголовок статьи не изменяется при смене ориентации экрана")
+    @Severity(SeverityLevel.NORMAL)
     public void testChangeOrientationOnSearchResults(){
         if(Platform.getInstance().isMW()){
             return;
@@ -40,6 +47,10 @@ public class ChangeAppConditionTests extends CoreTestCase {
     }
 
     @Test
+    @Features(value = {@Feature("Поиск"), @Feature("Фоновый режим")})
+    @DisplayName("Проверка поиска после возврата из фонового режима")
+    @Description("Проверка что результаты поиска сохраняются после сворачивания приложения в фон")
+    @Severity(SeverityLevel.NORMAL)
     public void testCheckSearchInBackground(){
 
         if(Platform.getInstance().isMW()){

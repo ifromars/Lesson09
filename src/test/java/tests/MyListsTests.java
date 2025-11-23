@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.*;
 import lib.CoreTestCase;
 import lib.EnvConfig;
 import lib.Platform;
@@ -9,8 +10,10 @@ import lib.ui.factories.MyListsPageObjectFactory;
 import lib.ui.factories.NavigationPageObjectFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@Epic("Тесты для списков")
 public class MyListsTests extends CoreTestCase {
 
     private String nameOfFolder = "Test";
@@ -20,6 +23,10 @@ public class MyListsTests extends CoreTestCase {
             password = EnvConfig.getWikipediaPassword();
 
     @Test
+    @Features(value = {@Feature("Поиск"), @Feature("Статья"), @Feature("Списки")})
+    @DisplayName("Сохранение первой статьи в список")
+    @Description("Сохранение статьи в список и последующее удаление")
+    @Severity(SeverityLevel.CRITICAL)
     public void testSaveFirstArticleToMyList() {
 
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
@@ -81,6 +88,10 @@ public class MyListsTests extends CoreTestCase {
     }
 
     @Test
+    @Features(value = {@Feature("Поиск"), @Feature("Статья"), @Feature("Списки")})
+    @DisplayName("Сохранение двух статей в список и удаление одной")
+    @Description("Сохранение двух статей в список, затем удаление одной и проверка что вторая осталась")
+    @Severity(SeverityLevel.CRITICAL)
     public void testSaveTwoArticlesToMyListAndDeleteOneOfTheArticles() {
         String nameOfFolder = "Всякое разное";
 

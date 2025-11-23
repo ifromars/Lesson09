@@ -17,8 +17,7 @@ public class ArticleTests extends CoreTestCase {
     @Features(value = {@Feature("Поиск"), @Feature("Статья")})
     @DisplayName("Сравнение заголовка с ожидаемым")
     @Description("Открываем статью Java и проверяем что у ней заголовок который мы ожидаем")
-    @Step("Начало теста testCompareArticleTest")
-    @Severity(value = SeverityLevel.BLOCKER)
+    @Severity(SeverityLevel.BLOCKER)
     public void testCompareArticleTest(){
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);;
@@ -38,7 +37,6 @@ public class ArticleTests extends CoreTestCase {
     @Features(value = {@Feature("Поиск"), @Feature("Статья")})
     @DisplayName("Прокрутка статьи до футера")
     @Description("Открываем статью и прокручиваем до футера")
-    @Step("Начало теста testSwipeArticleTest")
     @Severity(SeverityLevel.MINOR)
     public void testSwipeArticleTest(){
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);

@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import io.qameta.allure.Step;
 
 public class OnboardingPageObject extends MainPageObject {
 
@@ -10,6 +11,7 @@ public class OnboardingPageObject extends MainPageObject {
         super(driver);
     }
 
+    @Step("Пропуск онбординга")
     public void skipOnboarding(){
         this.waitForElementAndClick(SKIP_ONBOARDING_BUTTON, "Кнопки 'Пропустить' нет", 90);
     }

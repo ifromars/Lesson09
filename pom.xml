@@ -14,11 +14,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <appium.version>9.3.0</appium.version>
         <selenium.version>4.20.0</selenium.version>
-        <junit.version>4.13.1</junit.version>
+        <junit.version>5.10.2</junit.version>
         <allure.version>2.27.0</allure.version>
         <dotenv.version>5.2.2</dotenv.version>
         <surefire.version>3.2.5</surefire.version>
         <aspectj.version>1.9.21</aspectj.version>
+        <allure.results.directory>./target/allure-results</allure.results.directory>
+        <aspectjweaver.jar>${user.home}/.m2/repository/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar</aspectjweaver.jar>
     </properties>
     <dependencies>
         <dependency>
@@ -37,15 +39,21 @@
             <version>${selenium.version}</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-junit4</artifactId>
+            <artifactId>allure-junit5</artifactId>
             <version>${allure.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <version>1.10.2</version>
             <scope>test</scope>
         </dependency>
         <!-- AspectJ для Allure -->
@@ -53,7 +61,6 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectj.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <!-- Logging -->
@@ -86,17 +93,11 @@
                 <configuration>
                     <testFailureIgnore>false</testFailureIgnore>
                     <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                        -javaagent:@{aspectjweaver.jar}
                     </argLine>
                     <systemPropertyVariables>
-                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                        <allure.results.directory>${allure.results.directory}</allure.results.directory>
                     </systemPropertyVariables>
-                    <properties>
-                        <property>
-                            <name>listener</name>
-                            <value>io.qameta.allure.junit4.AllureJunit4</value>
-                        </property>
-                    </properties>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -114,6 +115,9 @@
                 <version>2.12.0</version>
                 <configuration>
                     <reportVersion>${allure.version}</reportVersion>
+                    <resultsDirectory>${allure.results.directory}</resultsDirectory>
+                    <reportDirectory>${project.build.directory}/allure-report</reportDirectory>
+                    <allureDownloadUrl>https://github.com/allure-framework/allure2/releases/download/${allure.version}/allure-${allure.version}.zip</allureDownloadUrl>
                 </configuration>
             </plugin>
         </plugins>
@@ -125,6 +129,7 @@
                 <artifactId>selenium-java</artifactId>
                 <version>4.20.0</version>
             </dependency>
+
             <dependency>
                 <groupId>org.seleniumhq.selenium</groupId>
                 <artifactId>selenium-api</artifactId>

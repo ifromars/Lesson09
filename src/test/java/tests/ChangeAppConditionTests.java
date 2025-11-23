@@ -6,7 +6,8 @@ import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
 import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.SearchPageObjectFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ChangeAppConditionTests extends CoreTestCase {
 
@@ -29,18 +30,12 @@ public class ChangeAppConditionTests extends CoreTestCase {
 
         String titleAfterRotation = ArticlePageObject.getArticleTitle("Java");
 
-        assertEquals(
-                "Article title have been changed after rotation",
-                titleBeforeRotation,
-                titleAfterRotation
-        );
+        Assertions.assertEquals(titleBeforeRotation, titleAfterRotation,
+                "Article title have been changed after rotation");
         this.rotateScreenPortrait();
         String titleAfterSecondRotation = ArticlePageObject.getArticleTitle("Java");
-        assertEquals(
-                "Article title have been changed after rotation",
-                titleBeforeRotation,
-                titleAfterSecondRotation
-        );
+        Assertions.assertEquals(titleBeforeRotation, titleAfterSecondRotation,
+                "Article title have been changed after rotation");
 
     }
 

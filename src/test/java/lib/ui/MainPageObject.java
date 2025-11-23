@@ -1,15 +1,21 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumBy;
+import io.qameta.allure.Attachment;
+import io.qameta.allure.Step;
 import lib.Platform;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -21,6 +27,7 @@ public class MainPageObject {
     public MainPageObject(RemoteWebDriver driver){
         this.driver=driver;
     }
+    @Step("Свайп элемента влево")
     public void swipeElementToLeft(String locator, String error_message){
         WebElement element = waitForElementPresent(locator, error_message, 15);
         int left_x = element.getLocation().getX();
@@ -50,6 +57,7 @@ public class MainPageObject {
         driver.perform(List.of(swipe));
     }
 
+    @Step("Свайп вверх")
     public void swipeUp (int timeOfSwipe){
 
         Dimension size = driver.manage().window().getSize();
@@ -68,10 +76,12 @@ public class MainPageObject {
 
     }
 
+    @Step("Быстрый свайп вверх")
     public void swipeUpQuick(){
         swipeUp(200);
     }
 
+    @Step("Свайп вверх до появления элемента")
     public void swipeUpToFindElement(String locator, String error_message, int maxSwipes){
         By by = this.getLocatorByString(locator);
         int alreadySwiped = 0;
@@ -85,6 +95,7 @@ public class MainPageObject {
         }
     }
 
+    @Step("Ожидание появления элементов")
     public List<WebElement> waitForElementsPresent(By by, String error_message, int timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
         wait.withMessage(error_message + "\n");
@@ -97,6 +108,7 @@ public class MainPageObject {
 //        return wait.until(ExpectedConditions.presenceOfElementLocated(by));
 //    }
 
+    @Step("Ожидание появления элемента")
     public WebElement waitForElementPresent(String locator, String error_message, int timeoutInSeconds) {
         By by = this.getLocatorByString(locator);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
@@ -107,21 +119,25 @@ public class MainPageObject {
         ));
     }
 
+    @Step("Ожидание появления элемента (без ожидания)")
     public WebElement waitForElementPresentZeroWait(String locator, String error_message){
         return waitForElementPresent (locator,error_message,0);
     }
 
+    @Step("Ожидание появления элемента")
     public WebElement waitForElementPresent(String locator, String error_message){
         return waitForElementPresent (locator,error_message,90);
     }
 
+    @Step("Проверка текста элемента")
     public void assertElementHasText(String locator, String expected_text, String error_message) {
         WebElement element = waitForElementPresent(locator, error_message, 10);
         String actual_text = element.getText();
-        Assert.assertEquals(error_message, expected_text, actual_text);
+        Assertions.assertEquals(expected_text, actual_text, error_message);
 
     }
 
+    @Step("Ожидание и клик по элементу")
     public WebElement waitForElementAndClick(String locator, String error_message, int timeoutInSeconds){
         WebElement element = waitForElementPresent(locator, error_message,timeoutInSeconds);
         // Повторно находим элемент перед кликом, чтобы избежать StaleElementReferenceException
@@ -130,6 +146,7 @@ public class MainPageObject {
         return element;
     }
 
+    @Step("Ожидание элемента и ввод текста '{value}'")
     public WebElement waitForElementAndSendKeys(String locator, String value, String error_message, int timeoutInSeconds){
         WebElement element = waitForElementPresent(locator, error_message, timeoutInSeconds);
         // Повторно находим элемент перед вводом текста, чтобы избежать StaleElementReferenceException
@@ -137,6 +154,7 @@ public class MainPageObject {
         element.sendKeys(value);
         return element;
     }
+    @Step("Ожидание исчезновения элемента")
     public boolean waitForElementNotPresent(String locator, String error_message, int timeoutInSeconds){
         By by = this.getLocatorByString(locator);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
@@ -145,6 +163,7 @@ public class MainPageObject {
                 ExpectedConditions.invisibilityOfElementLocated(by)
         );
     }
+    @Step("Ожидание элемента и очистка поля")
     public WebElement waitForElementAndClear(String locator, String error_message, int timeoutInSeconds){
 
         WebElement element = waitForElementPresent(locator, error_message, timeoutInSeconds);
@@ -153,19 +172,22 @@ public class MainPageObject {
 
     }
 
+    @Step("Проверка что все элементы содержат текст '{text}'")
     public void assertAllElementsContainText(List<WebElement> elements, String text){
         for (WebElement element: elements){
             String actualText = element.getText();
-            Assert.assertTrue("Элемент не содержит текст '" + text + "', текущий текст: " + actualText,
-                    actualText.toLowerCase().contains(text.toLowerCase()));
+            Assertions.assertTrue(actualText.toLowerCase().contains(text.toLowerCase()),
+                    "Элемент не содержит текст '" + text + "', текущий текст: " + actualText);
         }
     }
+    @Step("Получение количества элементов")
     public int getAmountOfElements(String locator){
         By by = this.getLocatorByString(locator);
         List elements = driver.findElements(by);
         return elements.size();
     }
 
+    @Step("Проверка отсутствия элемента")
     public void assertElementNotPresent(String locator, String errorMessage){
         int amountOfElements = getAmountOfElements(locator);
         if (amountOfElements > 0){
@@ -174,6 +196,7 @@ public class MainPageObject {
         }
     }
 
+    @Step("Ожидание элемента и получение атрибута '{attribute}'")
     public String waitForElementAndGetAttribute(String locator, String attribute, String errorMessage, int timeoutInSeconds){
         WebElement element = waitForElementPresent(locator, errorMessage, timeoutInSeconds);
         return element.getAttribute(attribute);
@@ -181,18 +204,20 @@ public class MainPageObject {
 
 
 
+    @Step("Свайп вверх до появления элемента")
     public void swipeUpTillElementAppears(String locator, String errorMessage, int maxSwipes){
 
         int alreadySwiped = 0;
         while (!this.isElementLocatedOnTheScreen(locator)){
             if(alreadySwiped > maxSwipes){
-                Assert.assertTrue(errorMessage, this.isElementLocatedOnTheScreen(locator));
+                Assertions.assertTrue(this.isElementLocatedOnTheScreen(locator), errorMessage);
             }
             swipeUpQuick();
             ++alreadySwiped;
         }
     }
 
+    @Step("Проверка расположения элемента на экране")
     public boolean isElementLocatedOnTheScreen(String locator){
         int elementLocationByY = this.waitForElementPresent(locator,"Footer не найден",90).getLocation().getY();
         if(Platform.getInstance().isMW()){
@@ -204,10 +229,12 @@ public class MainPageObject {
         return elementLocationByY < screenSizeByY;
     }
 
+    @Step("Проверка наличия элемента")
     public boolean isElementPresent(String locator){
         return getAmountOfElements(locator)>0;
     }
 
+    @Step("Прокрутка веб-страницы вверх")
     public void scrollWebPageUp(){
         if(Platform.getInstance().isMW()){
             JavascriptExecutor JSExecutor = (JavascriptExecutor) driver;
@@ -217,6 +244,7 @@ public class MainPageObject {
         }
     }
 
+    @Step("Попытка клика по элементу с несколькими попытками")
     public void tryClickElementWithFewAttempts(String locator, String errorMessage, int amountOfAttempts){
 
         int currentAttempt = 0;
@@ -237,6 +265,7 @@ public class MainPageObject {
         }
     }
 
+    @Step("Прокрутка веб-страницы до скрытия элемента")
     public void scrollWebPageTillElementNotVisible(String locator, String errorMessage, int maxSwipes){
         int alreadySwiped = 0;
 
@@ -245,7 +274,7 @@ public class MainPageObject {
             scrollWebPageUp();
             ++alreadySwiped;
             if(alreadySwiped>maxSwipes){
-                Assert.assertTrue(errorMessage, element.isDisplayed());
+                Assertions.assertTrue(element.isDisplayed(), errorMessage);
             }
 
         }
@@ -270,5 +299,32 @@ public class MainPageObject {
     }else{
             throw new IllegalArgumentException("Локатор не найден");
         }
+    }
+
+    @Step("Создание скриншота '{name}'")
+    public String takeScreenshot(String name){
+        TakesScreenshot ts = (TakesScreenshot)this.driver;
+        File source = ts.getScreenshotAs(OutputType.FILE);
+        String path = System.getProperty("user.dir") + "/" + name + "_screenshot.png";
+        try {
+//            FileUtils.copyFile(source, new File(path));
+            Files.copy(source.toPath(), new File(path).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("Скриншот сделан" + path);
+
+        } catch (Exception e) {
+            System.out.println("Невозможно сделать скриншот " + e.getMessage());
+        }
+        return path;
+    }
+
+    @Attachment
+    public static byte[] screenshot(String path){
+        byte[] bytes = new byte[0];
+        try {
+            bytes = Files.readAllBytes(Paths.get(path));
+        } catch (IOException e) {
+            System.out.println("Cannot get bytes from screenshot. Error " + e.getMessage());
+        }
+        return bytes;
     }
 }

@@ -1,6 +1,7 @@
 package lib.ui;
 
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -13,6 +14,7 @@ abstract public class MyListsPageObject extends MainPageObject {
             IOS_SWIPE_ACTION_DELETE,
             REMOVE_FROM_SAVED_BUTTON;
 
+    @Step("Удаление статьи из списка")
     public void deleteArticleFromList(){
         this.waitForElementAndClick(
                 IOS_SWIPE_ACTION_DELETE,
@@ -35,6 +37,7 @@ abstract public class MyListsPageObject extends MainPageObject {
         super(driver);
     }
 
+    @Step("Открытие папки '{nameOfFolder}'")
     public void openFolderByName(String nameOfFolder) {
         String nameOfFolderXpath = getFolderXpathName(nameOfFolder);
         this.waitForElementAndClick(nameOfFolderXpath,
@@ -43,12 +46,14 @@ abstract public class MyListsPageObject extends MainPageObject {
         );
     }
 
+    @Step("Закрытие всплывающего сообщения")
     public void closePopUpMessage() {
         this.waitForElementAndClick(POP_UP_MESSAGE_BUTTON,
                 "ясно, понятно",
                 90);
     }
 
+    @Step("Свайп статьи '{articleTitle}' для удаления")
     public void swipeArticleByTitleToDelete(String articleTitle) {
         this.waitForArticleToAppearByTitle(articleTitle);
         String ArticleXpathName = getArticleXpathName(articleTitle);
@@ -68,6 +73,7 @@ abstract public class MyListsPageObject extends MainPageObject {
         this.waitForArticleToDisappearByTitle(articleTitle);
 
     }
+    @Step("Ожидание исчезновения статьи '{articleTitle}'")
     public void waitForArticleToDisappearByTitle(String articleTitle){
         String ArticleXpathName = getArticleXpathName(articleTitle);
         this.waitForElementNotPresent(ArticleXpathName,
@@ -76,6 +82,7 @@ abstract public class MyListsPageObject extends MainPageObject {
 
     }
 
+    @Step("Ожидание появления статьи '{articleTitle}'")
     public void waitForArticleToAppearByTitle(String articleTitle){
         String ArticleXpathName = getArticleXpathName(articleTitle);
         this.waitForElementPresent(ArticleXpathName,
@@ -84,6 +91,7 @@ abstract public class MyListsPageObject extends MainPageObject {
 
     }
 
+    @Step("Нажатие на статью '{articleTitle}'")
     public void clickForArticleByTitle(String articleTitle){
         String ArticleXpathName = getArticleXpathName(articleTitle);
         this.waitForElementAndClick(ArticleXpathName,

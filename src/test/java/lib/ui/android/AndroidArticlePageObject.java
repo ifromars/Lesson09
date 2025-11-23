@@ -12,6 +12,7 @@ public class AndroidArticlePageObject extends ArticlePageObject {
     static {
             SKIP_GAMES_BUTTON = "androidUIAutomator:new UiSelector().resourceId(\"org.wikipedia:id/closeButton\")";
             TITLE_ELEMENT_TPL = "androidUIAutomator:new UiSelector().text(\"{TITLE}\").instance(0)";
+            TITLE = "xpath://android.view.ViewGroup[@resource-id=\"org.wikipedia:id/page_contents_container\"]//android.view.View[@resource-id=\"pcs\"]//android.widget.TextView";
             FOOTER_ELEMENT = "xpath://*[@text = 'Просмотреть статью в браузере']";
             SAVE_PAGE_TO_LIST = "id:org.wikipedia:id/page_save";
             SAVE_PAGE_OK_BUTTON = "id:org.wikipedia:id/snackbar_action";

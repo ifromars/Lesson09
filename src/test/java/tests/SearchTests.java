@@ -3,7 +3,8 @@ package tests;
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
 import lib.ui.factories.SearchPageObjectFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class SearchTests extends CoreTestCase {
 
@@ -44,8 +45,7 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.typeSearchLine(searchString);
         int amountOfSearchResult = SearchPageObject.getAmountOfFoundArticles();
 
-        assertTrue("Слишком мало результатов",
-                amountOfSearchResult > 0);
+        Assertions.assertTrue(amountOfSearchResult > 0, "Слишком мало результатов");
     }
 
     @Test

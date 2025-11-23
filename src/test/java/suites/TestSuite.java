@@ -1,20 +1,17 @@
 package suites;
 
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.Suite;
 import tests.*;
 
-@RunWith(Suite.class)
-
-@Suite.SuiteClasses({
+@Suite
+@SelectClasses({
         ArticleTests.class,
         ChangeAppConditionTests.class,
         GetStartedTest.class,
         MyListsTests.class,
         SearchTests.class
 })
-
-
 public class TestSuite {
 }

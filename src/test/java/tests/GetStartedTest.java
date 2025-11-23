@@ -3,7 +3,7 @@ package tests;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.WelcomePageObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class GetStartedTest extends CoreTestCase {
 

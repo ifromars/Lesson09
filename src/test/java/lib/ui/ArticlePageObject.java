@@ -1,6 +1,7 @@
 package lib.ui;
 
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -31,31 +32,32 @@ abstract public class ArticlePageObject extends MainPageObject {
     public ArticlePageObject (RemoteWebDriver driver){
         super (driver);
     }
-
+    @Step("Закрытие предложения сыграть в игры на Википедия")
     public void closeWikipediaGamesSuggestion(){
         this.waitForElementAndClick(SKIP_GAMES_BUTTON, "Кнопки 'Пропустить' нет", 15);
     }
-
+    @Step("Нажатие кнопки Понятно на iOS")
     public void clickGotItiOS(){
-        this.waitForElementAndClick(GOT_IT, "Кнопки 'Понятно' нет", 90);
+        this.waitForElementAndClick(GOT_IT, "Кнопки 'Понятно' нет", 10);
     }
-
+    @Step("Ожидание появления заголовка")
     public WebElement waitForTitleElement(String substring){
         String getTitleElement = getTitleElement(substring);
         return  this.waitForElementPresent(getTitleElement,
                 "Не могу найти заголовок",
-                90);
+                10);
     }
-
+    @Step("Ожидание появления заголовка упрощенно")
     public WebElement waitForTitleElementSimple(){
 
         return  this.waitForElementPresent(TITLE,
                 "Не могу найти заголовок",
-                90);
+                10);
     }
-
+    @Step("Получить название статьи")
     public String getArticleTitle(String substring){
         WebElement title_element = waitForTitleElement(substring);
+        screenshot(this.takeScreenshot("articleTitle"));
         if(Platform.getInstance().isAndroid()){
             return title_element.getAttribute("text");
         }else if(Platform.getInstance().isiOS()){
@@ -64,9 +66,10 @@ abstract public class ArticlePageObject extends MainPageObject {
             return title_element.getText();
         }
     }
-
+    @Step("Получить название статьи")
     public String getArticleTitle(){
         WebElement title_element = waitForTitleElementSimple();
+        screenshot(this.takeScreenshot("articleTitle"));
         if(Platform.getInstance().isAndroid()){
             return title_element.getAttribute("text");
         }else if(Platform.getInstance().isiOS()){
@@ -75,65 +78,65 @@ abstract public class ArticlePageObject extends MainPageObject {
             return title_element.getText();
         }
     }
-
+    @Step("Прокрутка до футера статьи")
     public void swipeToFooter(){
 
         if(Platform.getInstance().isiOS()){
             this.swipeUpTillElementAppears(FOOTER_ELEMENT,"Футер статьи не найден",40);
-        }else if(Platform.getInstance().isiOS()){
+        }else if(Platform.getInstance().isAndroid()){
         this.swipeUpToFindElement(FOOTER_ELEMENT,
                 "Футер статьи не найден",
-                90);
+                40);
         }else{
             this.scrollWebPageTillElementNotVisible(FOOTER_ELEMENT, "Footer of webPage not found", 40);
         }
     }
-
+    @Step("Сохранение статьи в Мой список для андроид")
     public void saveArticleToMyList(String nameOfFolder){
         this.waitForElementAndClick(SAVE_PAGE_TO_LIST,
                 "Элемент 'Сохранить в список' не найден",
-                90
+                10
         );
         this.waitForElementAndClick(SAVE_PAGE_OK_BUTTON,
                 "Тост не найден",
-                90
+                10
         );
         this.waitForElementAndSendKeys(SAVE_PAGE_FOLDER_NAME,
                 nameOfFolder,
                 "Поле ввода не найдено" ,
-                90);
+                10);
         this.waitForElementAndClick(OK_BUTTON,
                 "Элемент 'Ок' не найден",
-                90
+                10
         );
     }
-
+    @Step("Сохраниене статьи в список для iOS или мобильной версии браузера")
     public void saveArticleToSaved(){
         if(Platform.getInstance().isMW()){
             this.removeArticleFromSavedIfItWasAdded();
         }
         this.waitForElementAndClick(SAVE_PAGE_TO_LIST,
                 "Элемент 'Сохранить в список' не найден",
-                90
+                10
         );
     }
-
+    @Step("Сохранение статьи в существующий список андроид")
     public void saveArticleToExistingList(String nameOfFolder) {
         String folderName = getFolderName(nameOfFolder);
         this.waitForElementAndClick(SAVE_PAGE_TO_LIST,
                 "Элемент 'Сохранить в список' не найден",
-                90
+                10
         );
         this.waitForElementAndClick(SAVE_PAGE_OK_BUTTON,
                 "Тост не найден",
-                90
+                10
         );
         waitForElementAndClick(folderName,
                 "Список не найден",
                 10
         );
     }
-
+    @Step("Удалить статью из списка, если она уже была туда добавлена")
     public void removeArticleFromSavedIfItWasAdded(){
         if(this.isElementPresent(OPTIONS_REMOVE_FROM_MY_LIST)){
             this.waitForElementAndClick(OPTIONS_REMOVE_FROM_MY_LIST, "cannot remove from list", 5);

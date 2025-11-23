@@ -8,8 +8,8 @@ import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.MyListsPageObjectFactory;
 import lib.ui.factories.NavigationPageObjectFactory;
 import lib.ui.factories.SearchPageObjectFactory;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class MyListsTests extends CoreTestCase {
 
@@ -52,10 +52,8 @@ public class MyListsTests extends CoreTestCase {
 
             articlePage.waitForTitleElement(articleTitle);
 
-            assertEquals("We are not on the same page",
-                    articleTitle,
-                    articlePage.getArticleTitle()
-            );
+            Assertions.assertEquals(articleTitle, articlePage.getArticleTitle(),
+                    "We are not on the same page");
             articlePage.saveArticleToSaved();
         }
 
@@ -122,10 +120,8 @@ public class MyListsTests extends CoreTestCase {
 
             articlePage.waitForTitleElement(javaTitle);
 
-            assertEquals("We are not on the same page",
-                    javaTitle,
-                    articlePage.getArticleTitle()
-            );
+            Assertions.assertEquals(javaTitle, articlePage.getArticleTitle(),
+                    "We are not on the same page");
             articlePage.saveArticleToSaved();
         }
 
@@ -189,10 +185,7 @@ public class MyListsTests extends CoreTestCase {
         articlePage.waitForTitleElement(apkTitle);
         String titleAfterDeletion = articlePage.getArticleTitle(apkTitle);
 
-        Assert.assertEquals(
-                "Название статьи изменилось после удаления другой статьи",
-                apkTitle,
-                titleAfterDeletion
-        );
+        Assertions.assertEquals(apkTitle, titleAfterDeletion,
+                "Название статьи изменилось после удаления другой статьи");
     }
 }
